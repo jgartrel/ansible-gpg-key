@@ -12,11 +12,6 @@ Looking for an easy and secure way to generate and store GPG keys for your ansib
 
 This module was created for use with GnuPG **v2.2.4+** (including libgcrypt **v1.8.1+**), which is the default on Ubuntu 18.04 images. The libgcrypt version is also checked because I also use Ed25519 keys, which is supported only by newer versions of libgcrypt. The module may also work on older versions, but it is untested. Also, some commands have changed between GnuGP version 1.x and 2.x and therefore are incompatible.
 
-To perform this version check, make sure python package ```packaging``` is installed on the target host:
-```bash
-pip install packaging
-```
-
 ## Installation
 
 To install this module, clone it, download it, copy it, whatever (but name the file **gpg_key.py**), to a folder on your ansible host. Then, make sure ansible can find the module by pointing ```library``` to the folder containing the gpg_key.py file:
