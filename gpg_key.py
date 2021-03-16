@@ -205,7 +205,6 @@ import re
 import os
 import time
 from ansible.module_utils.basic import AnsibleModule
-from packaging import version
 
 # class to import GPG keys
 class GpgKey(object):
@@ -996,7 +995,7 @@ class GpgKey(object):
         lines = stdout.splitlines()
 
         # find gpg version
-        regex_gpg = r"gpg\s+\(GnuPG[^)]*\)\s+(\d+\.\d+\.?\d*)$"
+        regex_gpg = r"gpg\s+\(GnuPG[^)]*\)\s+(\d+\.\d+)\.?\d*$"
         match_gpg = re.search(regex_gpg, lines[0])
 
         # sanity check
@@ -1004,7 +1003,7 @@ class GpgKey(object):
             self.module.fail_json(msg="could not find a valid gpg version number in string [{}]".format(lines[0]))
 
         # find libgcrypt version
-        regex_libgcrypt = r"libgcrypt\s+(\d+\.\d+\.?\d*)"
+        regex_libgcrypt = r"libgcrypt\s+(\d+\.\d+)\.?\d*"
         match_libgcrypt = re.match(regex_libgcrypt, lines[1])
 
         # sanity check
@@ -1015,14 +1014,14 @@ class GpgKey(object):
         versions        =  {'gpg'       : match_gpg.group(1),
                             'libgcrypt' : match_libgcrypt.group(1),
                            }
-        req_gpg         = '2.1.17'
-        req_libgcrypt   = '1.8.1'
+        req_gpg         = '2.1'
+        req_libgcrypt   = '1.8'
 
         # display minimum versions
         self._vv("gpg_key module requires at least gnupg version [{}] and libgcrypt version [{}]".format(versions['gpg'], versions['libgcrypt']))
 
         # sanity check
-        if version.parse(versions['gpg']) < version.parse(req_gpg) or version.parse(versions['libgcrypt']) < version.parse(req_libgcrypt):
+        if float(versions['gpg']) < float(req_gpg) or float(versions['libgcrypt']) < float(req_libgcrypt):
             self.module.fail_json(msg="gpg version [{}] and libgcrypt version [{}] are required; [{}] and [{}] given".format(req_gpg, req_libgcrypt, versions['gpg'], versions['libgcrypt']))
         else:
             self._vv("gnupg version [{}] and libgcrypt version [{}] detected".format(versions['gpg'], versions['libgcrypt']))
