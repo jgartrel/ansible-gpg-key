@@ -1398,9 +1398,9 @@ class GpgKey(object):
         }
 
         # convert trust if necessary
-        if trust1 in trust_map.keys():
+        if trust1 in list(trust_map.keys()):
             trust1 = trust_map[trust1]
-        if trust2 in trust_map.keys():
+        if trust2 in list(trust_map.keys()):
             trust2 = trust_map[trust2]
 
         self._vv("comparing trust [{}] and [{}]".format(trust1, trust2))
